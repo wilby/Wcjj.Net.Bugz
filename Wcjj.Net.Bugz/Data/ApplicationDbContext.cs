@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Wcjj.Net.Bugz.Data 
 {
@@ -28,12 +30,15 @@ public class ApplicationDbContext : IdentityDbContext
         public int AppId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string OwnerID {get;set;}
-        public IdentityUser Owner { get; set;}
+        public string OwnerID { get; set; }
+        
+        
+        
+        public IdentityUser? Owner { get; set;}
         public DateTime CreateDate { get; set; }
 
-
-        public List<Bug> Bugz { get; } = new();
+        
+        public List<Bug> Bugz { get; set; } = new();
     }
 
     
@@ -49,12 +54,12 @@ public class ApplicationDbContext : IdentityDbContext
 
         //User reference
         public string SubmitterId { get; set; }
-        public IdentityUser Submitter { get; set;}
+        public IdentityUser? Submitter { get; set;}
         public string AssignedToId { get; set; }
-        public IdentityUser AssignedTo { get; set;}
+        public IdentityUser? AssignedTo { get; set;}
 
-        public int AppId {get;set; }
-        public App Application { get; set; }
+        public int AppId { get; set; }        
+        public App? Application { get; set; }
 
        public List<Comment> Comments {get; set; } = new();
 
@@ -107,7 +112,7 @@ public class ApplicationDbContext : IdentityDbContext
         public MimeType MimeType_ {get;set;}
 
         public int BugId {get;set;}
-        public Bug Bugg {get;set;}
+        public Bug? Bugg {get;set;}
         
         
     }
@@ -119,6 +124,6 @@ public class ApplicationDbContext : IdentityDbContext
         public MimeType MimeType_ {get;set;}
 
         public int CommentId {get;set;}
-        public Comment Comment_ {get;set;}
+        public Comment? Comment_ {get;set;}
     }
 }

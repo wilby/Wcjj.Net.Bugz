@@ -1,0 +1,19 @@
+@using Wcjj.Net.Bugz.Data
+
+@model List<MimeType>
+
+
+@{
+    int SelectedId = (int)(ViewData["SelectedId"] ?? -1);
+}
+
+<select class='form-control' data-val="true" data-val-required="The Status Id field is reqiured." id="MimeTypeId">
+        @foreach(MimeType s in Model) {
+             if(s.MimeTypeId == SelectedId) {
+                <option value="@s.MimeTypeId" title="@s.Description" selected=selected>@s.Type / @s.AltType</option>
+            } else {
+                <option value="@s.MimeTypeId" title="@s.Description">@s.Type / @s.AltType</option>
+            }
+            
+        }
+</select>

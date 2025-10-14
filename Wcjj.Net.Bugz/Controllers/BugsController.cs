@@ -57,6 +57,7 @@ namespace Wcjj.Net.Bugz.Controllers
             var bug = new Bug();
             bug.Status_ = _context.Status_.ToList();
             bug.BugTypes = _context.Priorities.ToList();
+            bug.Apps = _context.Apps.ToList();
            
             return View(bug);
         }
@@ -77,6 +78,9 @@ namespace Wcjj.Net.Bugz.Controllers
             ViewData["AppId"] = new SelectList(_context.Apps, "AppId", "AppId", bug.AppId);
             ViewData["AssignedToId"] = new SelectList(_context.Users, "Id", "Id", bug.AssignedToId);
             ViewData["SubmitterId"] = new SelectList(_context.Users, "Id", "Id", bug.SubmitterId);
+            bug.Status_ = _context.Status_.ToList();
+            bug.BugTypes = _context.Priorities.ToList();
+            bug.Apps = _context.Apps.ToList();
             return View(bug);
         }
 

@@ -1,0 +1,18 @@
+@using Wcjj.Net.Bugz.Data
+
+@model List<Status>
+
+
+@{
+    int SelectedId = (int)(ViewData["SelectedId"] ?? -1);
+}
+
+<select class='form-control' data-val="true" data-val-required="The Status Id field is reqiured." id="StatusId">
+        @foreach(Status s in Model) {
+            if(s.StatusId == SelectedId) {
+                <option value="@s.StatusId" title="@s.Description" selected=selected>@s.Name</option>
+            } else {
+                <option value="@s.StatusId" title="@s.Description">@s.Name</option>
+            }
+        }
+</select>

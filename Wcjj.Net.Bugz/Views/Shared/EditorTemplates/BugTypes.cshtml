@@ -1,0 +1,19 @@
+@using Wcjj.Net.Bugz.Data
+
+@model List<Priority>
+
+
+@{
+    int SelectedId = (int)(ViewData["SelectedId"] ?? -1);
+}
+
+<select class='form-control' data-val="true" data-val-required="The Status Id field is reqiured." id="PriorityId">
+        @foreach(Priority s in Model.OrderBy(x => x.PriorityPrecedence)) {
+             if(s.PriorityId == SelectedId) {
+                <option value="@s.PriorityId" title="@s.Description" selected=selected>@s.PriorityPrecedence - @s.Name</option>
+            } else {
+                <option value="@s.PriorityId" title="@s.Description">@s.PriorityPrecedence - @s.Name</option>
+            }
+            
+        }
+</select>
