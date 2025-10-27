@@ -2,17 +2,20 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wcjj.Net.Bugz.Data;
 
 #nullable disable
 
-namespace Wcjj.Net.Bugz.Data.Migrations
+namespace Wcjj.Net.Bugz.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251027162128_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -250,6 +253,9 @@ namespace Wcjj.Net.Bugz.Data.Migrations
                     b.Property<int>("AppId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("AppId2")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("AssignedToId")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -275,6 +281,8 @@ namespace Wcjj.Net.Bugz.Data.Migrations
                     b.HasKey("BugId");
 
                     b.HasIndex("AppId");
+
+                    b.HasIndex("AppId2");
 
                     b.HasIndex("AssignedToId");
 
@@ -373,9 +381,6 @@ namespace Wcjj.Net.Bugz.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("BugId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -386,8 +391,6 @@ namespace Wcjj.Net.Bugz.Data.Migrations
 
                     b.HasKey("MimeTypeId");
 
-                    b.HasIndex("BugId");
-
                     b.ToTable("MimeTypes");
                 });
 
@@ -395,9 +398,6 @@ namespace Wcjj.Net.Bugz.Data.Migrations
                 {
                     b.Property<int>("PriorityId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("BugId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
@@ -413,8 +413,6 @@ namespace Wcjj.Net.Bugz.Data.Migrations
 
                     b.HasKey("PriorityId");
 
-                    b.HasIndex("BugId");
-
                     b.ToTable("Priorities");
                 });
 
@@ -422,9 +420,6 @@ namespace Wcjj.Net.Bugz.Data.Migrations
                 {
                     b.Property<int>("StatusId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("BugId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
@@ -436,8 +431,6 @@ namespace Wcjj.Net.Bugz.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("StatusId");
-
-                    b.HasIndex("BugId");
 
                     b.ToTable("Status_");
                 });
@@ -506,9 +499,15 @@ namespace Wcjj.Net.Bugz.Data.Migrations
 
             modelBuilder.Entity("Wcjj.Net.Bugz.Data.Bug", b =>
                 {
-                    b.HasOne("Wcjj.Net.Bugz.Data.App", "Application")
-                        .WithMany("Bugz")
+                    b.HasOne("Wcjj.Net.Bugz.Data.App", null)
+                        .WithMany("Bugs")
                         .HasForeignKey("AppId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Wcjj.Net.Bugz.Data.App", "App")
+                        .WithMany()
+                        .HasForeignKey("AppId2")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -524,7 +523,7 @@ namespace Wcjj.Net.Bugz.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Application");
+                    b.Navigation("App");
 
                     b.Navigation("AssignedTo");
 
@@ -552,7 +551,7 @@ namespace Wcjj.Net.Bugz.Data.Migrations
 
             modelBuilder.Entity("Wcjj.Net.Bugz.Data.Comment", b =>
                 {
-                    b.HasOne("Wcjj.Net.Bugz.Data.Bug", "Bugg")
+                    b.HasOne("Wcjj.Net.Bugz.Data.Bug", null)
                         .WithMany("Comments")
                         .HasForeignKey("BugId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -563,8 +562,6 @@ namespace Wcjj.Net.Bugz.Data.Migrations
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Bugg");
 
                     b.Navigation("CreatedBy");
                 });
@@ -588,41 +585,14 @@ namespace Wcjj.Net.Bugz.Data.Migrations
                     b.Navigation("MimeType_");
                 });
 
-            modelBuilder.Entity("Wcjj.Net.Bugz.Data.MimeType", b =>
-                {
-                    b.HasOne("Wcjj.Net.Bugz.Data.Bug", null)
-                        .WithMany("MimeTypes")
-                        .HasForeignKey("BugId");
-                });
-
-            modelBuilder.Entity("Wcjj.Net.Bugz.Data.Priority", b =>
-                {
-                    b.HasOne("Wcjj.Net.Bugz.Data.Bug", null)
-                        .WithMany("BugTypes")
-                        .HasForeignKey("BugId");
-                });
-
-            modelBuilder.Entity("Wcjj.Net.Bugz.Data.Status", b =>
-                {
-                    b.HasOne("Wcjj.Net.Bugz.Data.Bug", null)
-                        .WithMany("Status_")
-                        .HasForeignKey("BugId");
-                });
-
             modelBuilder.Entity("Wcjj.Net.Bugz.Data.App", b =>
                 {
-                    b.Navigation("Bugz");
+                    b.Navigation("Bugs");
                 });
 
             modelBuilder.Entity("Wcjj.Net.Bugz.Data.Bug", b =>
                 {
-                    b.Navigation("BugTypes");
-
                     b.Navigation("Comments");
-
-                    b.Navigation("MimeTypes");
-
-                    b.Navigation("Status_");
                 });
 
             modelBuilder.Entity("Wcjj.Net.Bugz.Data.Comment", b =>

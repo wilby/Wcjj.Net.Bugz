@@ -32,7 +32,10 @@
                 @Html.DisplayNameFor(model => model.AssignedTo)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Application)
+                @Html.DisplayNameFor(model => model.AppId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.App)
             </th>
             <th></th>
         </tr>
@@ -59,7 +62,10 @@
                 @Html.DisplayFor(modelItem => item.AssignedTo.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Application.AppId)
+                @Html.DisplayFor(modelItem => item.AppId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.App.AppId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.BugId">Edit</a> |

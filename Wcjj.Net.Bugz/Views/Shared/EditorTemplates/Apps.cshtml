@@ -5,7 +5,7 @@
     int SelectedId = (int)(ViewData["SelectedId"] ?? -1);
 }
 
-<select class='form-control' data-val="true" data-val-required="The App Id field is reqiured." id="AppId">
+<select class='form-control' data-val="true" data-val-required="The App Id field is reqiured." id="App.AppId">
         @foreach(App s in Model) {
             if(s.AppId == SelectedId) {
                 <option value="@s.AppId" title="@s.Description" selected=selected>@s.Name</option>

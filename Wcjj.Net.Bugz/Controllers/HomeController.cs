@@ -1,6 +1,9 @@
 using System.Diagnostics;
+using System.Xml.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using Wcjj.Net.Bugz.Data;
 using Wcjj.Net.Bugz.Models;
 
 namespace Wcjj.Net.Bugz.Controllers;
@@ -9,10 +12,12 @@ namespace Wcjj.Net.Bugz.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly ApplicationDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
     {
         _logger = logger;
+        _context = context;
     }
 
     public IActionResult Index()
@@ -23,6 +28,22 @@ public class HomeController : Controller
     public IActionResult Privacy()
     {
         return View();
+    }
+
+    [HttpGet]
+    public IActionResult Setup()
+    {
+        
+        return View();
+    }
+
+    [Authorize]
+    [HttpPost]
+    public IActionResult Setup(bool posted=true)
+    {
+        var fixtures = new NewAppFixtures(_context);
+        fixtures.CreateFixtures();
+        return RedirectToAction("Index", "Apps");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

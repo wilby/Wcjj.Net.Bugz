@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Wcjj.Net.Bugz.Data;
-using Wcjj.Net.Bugz.Data.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 
 var builder = WebApplication.CreateBuilder(args);

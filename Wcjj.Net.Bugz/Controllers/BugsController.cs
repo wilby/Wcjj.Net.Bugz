@@ -21,7 +21,7 @@ namespace Wcjj.Net.Bugz.Controllers
         // GET: Bugs
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Bugs.Include(b => b.Application).Include(b => b.AssignedTo).Include(b => b.Submitter);
+            var applicationDbContext = _context.Bugs.Include(b => b.App).Include(b => b.AssignedTo).Include(b => b.Submitter);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace Wcjj.Net.Bugz.Controllers
             }
 
             var bug = await _context.Bugs
-                .Include(b => b.Application)
+                .Include(b => b.App)
                 .Include(b => b.AssignedTo)
                 .Include(b => b.Submitter)
                 .FirstOrDefaultAsync(m => m.BugId == id);
@@ -43,23 +43,16 @@ namespace Wcjj.Net.Bugz.Controllers
                 return NotFound();
             }
 
-            
-
             return View(bug);
         }
 
         // GET: Bugs/Create
         public IActionResult Create()
         {
-            ViewData["AppId"] = new SelectList(_context.Apps, "AppId", "AppId");
+            ViewData["BugId"] = new SelectList(_context.Apps, "AppId", "AppId");
             ViewData["AssignedToId"] = new SelectList(_context.Users, "Id", "Id");
             ViewData["SubmitterId"] = new SelectList(_context.Users, "Id", "Id");
-            var bug = new Bug();
-            bug.Status_ = _context.Status_.ToList();
-            bug.BugTypes = _context.Priorities.ToList();
-            bug.Apps = _context.Apps.ToList();
-           
-            return View(bug);
+            return View();
         }
 
         // POST: Bugs/Create
@@ -75,12 +68,9 @@ namespace Wcjj.Net.Bugz.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppId"] = new SelectList(_context.Apps, "AppId", "AppId", bug.AppId);
+            ViewData["BugId"] = new SelectList(_context.Apps, "AppId", "AppId", bug.BugId);
             ViewData["AssignedToId"] = new SelectList(_context.Users, "Id", "Id", bug.AssignedToId);
             ViewData["SubmitterId"] = new SelectList(_context.Users, "Id", "Id", bug.SubmitterId);
-            bug.Status_ = _context.Status_.ToList();
-            bug.BugTypes = _context.Priorities.ToList();
-            bug.Apps = _context.Apps.ToList();
             return View(bug);
         }
 
@@ -97,7 +87,7 @@ namespace Wcjj.Net.Bugz.Controllers
             {
                 return NotFound();
             }
-            ViewData["AppId"] = new SelectList(_context.Apps, "AppId", "AppId", bug.AppId);
+            ViewData["BugId"] = new SelectList(_context.Apps, "AppId", "AppId", bug.BugId);
             ViewData["AssignedToId"] = new SelectList(_context.Users, "Id", "Id", bug.AssignedToId);
             ViewData["SubmitterId"] = new SelectList(_context.Users, "Id", "Id", bug.SubmitterId);
             return View(bug);
@@ -135,7 +125,7 @@ namespace Wcjj.Net.Bugz.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppId"] = new SelectList(_context.Apps, "AppId", "AppId", bug.AppId);
+            ViewData["BugId"] = new SelectList(_context.Apps, "AppId", "AppId", bug.BugId);
             ViewData["AssignedToId"] = new SelectList(_context.Users, "Id", "Id", bug.AssignedToId);
             ViewData["SubmitterId"] = new SelectList(_context.Users, "Id", "Id", bug.SubmitterId);
             return View(bug);
@@ -150,7 +140,7 @@ namespace Wcjj.Net.Bugz.Controllers
             }
 
             var bug = await _context.Bugs
-                .Include(b => b.Application)
+                .Include(b => b.App)
                 .Include(b => b.AssignedTo)
                 .Include(b => b.Submitter)
                 .FirstOrDefaultAsync(m => m.BugId == id);
