@@ -121,6 +121,18 @@ namespace Wcjj.Net.Bugz.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+
+#if DEBUG
+                    //DB drops and created, email auto email confirming. 
+                    if(_userManager.Users.Count() == 1 )
+                    {
+                        var u = _userManager.Users.First();
+                        u.EmailConfirmed = true;                        
+                        await _userStore.UpdateAsync(u, CancellationToken.None);
+                        
+                    }
+#endif
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);

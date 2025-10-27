@@ -30,15 +30,14 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpGet]
     public IActionResult Setup()
     {
         
         return View();
     }
 
-    [Authorize]
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Setup(bool posted=true)
     {
         var fixtures = new NewAppFixtures(_context);

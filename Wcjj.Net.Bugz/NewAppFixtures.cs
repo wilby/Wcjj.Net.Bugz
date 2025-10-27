@@ -62,7 +62,7 @@ namespace Wcjj.Net.Bugz
 
                 _context.Status_.Add(new Status()
                 {
-                    StatusId = 3,
+                    StatusId = 4,
                     Name = "Closed",
                     Description = "Bug has been resolved and closed out."
                 });
